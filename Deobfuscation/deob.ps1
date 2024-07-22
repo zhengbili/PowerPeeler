@@ -10,7 +10,7 @@ param(
 
     [Parameter(Mandatory = $false)]
     [Alias('st')]
-    [ValidateSet('Simple', 'Read', 'Analysis', 'SemanticAnalysis')]
+    [ValidateSet('Simple', 'Experiment', 'Read', 'Analysis', 'SemanticAnalysis')]
     [string]$SettingType = 'Analysis',
 
     [Parameter(Mandatory = $false)]
@@ -25,6 +25,21 @@ param(
 
 switch ($SettingType) {
     'Simple' {
+        #Simple Configuration
+        $global:Rule = @{
+            'CHECK_PRINTABLE_RATE'         = 1
+            'IGNORE_ASSIGN_LEFT'           = $true
+            'IGNORE_SIGNLE_COMMAND_OUTPUT' = $true
+            'IGNORE_VARIABLE_ARGUMENT'     = $true
+            'STRONG_TYPE'                  = $false
+            'KEEP_USER_FUNCTION'           = $false
+            'MAX_LENGTH'                   = 1000
+            'ALLOW_TYPE'                   = @([int], [string], [char[]])
+            'BAN_TYPE'                     = @([intptr])
+        }
+        break
+    }
+    'Experiment' {
         #Simple Configuration
         $global:Rule = @{
             'CHECK_PRINTABLE_RATE'         = 1
