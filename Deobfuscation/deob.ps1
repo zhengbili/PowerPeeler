@@ -40,7 +40,7 @@ switch ($SettingType) {
         break
     }
     'Experiment' {
-        #Simple Configuration
+        #Experiment Configuration
         $global:Rule = @{
             'CHECK_PRINTABLE_RATE'         = 1
             'IGNORE_ASSIGN_LEFT'           = $true
