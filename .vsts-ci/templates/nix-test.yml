@@ -1,0 +1,19 @@
+parameters:
+  pool: 'macOS-latest'
+  purpose: ''
+  tagSet: 'CI'
+  name: 'mac'
+
+jobs:
+- job: ${{ parameters.name }}_test_${{ parameters.purpose }}_${{ parameters.tagSet }}
+
+  pool:
+    vmImage: ${{ parameters.pool }}
+
+  displayName: ${{ parameters.name }} Test - ${{ parameters.purpose }} - ${{ parameters.tagSet }}
+
+  steps:
+    - template: ./test/nix-test-steps.yml
+      parameters:
+        purpose: ${{ parameters.purpose }}
+        tagSet: ${{ parameters.tagSet }}

