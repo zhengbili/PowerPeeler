@@ -8,22 +8,25 @@
 
 ### Related resources
 
-- conference paper
-- full paper：[arxiv](https://arxiv.org/abs/2406.04027)
+- conference paper: in coming
+- full paper: [arxiv](https://arxiv.org/abs/2406.04027)
 
 
 
 ### Usage
 
-1. Environment requirement
+1. Build environment requirement
 
    - base environment: refer to [PowerShell official build instruction](https://github.com/PowerShell/PowerShell#building-the-repository)
-   - .net core 3.1
-   - pwsh(powershell>=7)
+   - .net core 7.0.101
+   - pwsh/powershell
+
+2. Runtime environment
+
    - PSScriptAnalyzer(optional, for code formatting)
    - [Invoke-Deobfuscation](https://gitee.com/snowroll/invoke-deobfuscation)(optional, static and dynamic combination)
 
-2. Get the tool
+3. Get the tool
 
    ```bash
    git clone https://github.com/zhengbili/PowerPeeler
@@ -35,14 +38,14 @@
    git clone https://gitee.com/snowroll/powerpeeler
    ```
 
-3. Compile sandbox
+4. Compile sandbox
 
    ```powershell
    cd PowerPeeler
    pwsh ./build.ps1
    ```
 
-4. Tool usage
+5. Tool usage
 
    1. Change the directory to prevent some malicious scripts from polluting the current directory: ```cd sandbox```
    2. Enter special pwsh environments: ```../pwsh```
@@ -51,11 +54,11 @@
    ```powershell
    ../Deobfuscation/deob.ps1 --SettingType [Simple|Analysis|SemanticAnalysis]  --InputPath InputFileLocation --OutputPath OutputFileLocation [-cmd] [-log]
    ```
-​	```-st --SettingType```	deobfuscation mode, with several presets, the code can be modified yourself
-​	```-ip --InputPath```	input file location
-​	```-op --OutputPath```	output file location
-​	```-cmd --IsCmd```	cmd one-line mode
-​	```-log --SaveLog```	save log
+   ​	```-st --SettingType```	deobfuscation mode, with several presets, the code can be modified yourself
+   ​	```-ip --InputPath```	input file location
+   ​	```-op --OutputPath```	output file location
+   ​	```-cmd --IsCmd```	cmd one-line mode
+   ​	```-log --SaveLog```	save log
 
 
 

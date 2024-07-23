@@ -6,22 +6,25 @@
 
 ### 相关资料
 
-- 会议版论文
+- 会议版论文：in coming
 - 完整版论文：[arxiv](https://arxiv.org/abs/2406.04027)
 
 
 
 ### 使用方法
 
-1. 环境需求
+1. 编译环境需求
 
    - 基本环境：参见[PowerShell官方编译指南](https://github.com/PowerShell/PowerShell#building-the-repository)
-   - .net core 3.1
-   - pwsh(powershell>=7)
+   - .net core 7.0.101
+   - pwsh/powershell
+
+2. 运行环境
+
    - PSScriptAnalyzer（可选，用于代码格式化）
    - [Invoke-Deobfuscation](https://gitee.com/snowroll/invoke-deobfuscation)（可选，用于动静态结合反混淆）
 
-2. 工具获取
+3. 工具获取
 
    ```bash
    git clone https://github.com/zhengbili/PowerPeeler
@@ -33,14 +36,14 @@
    git clone https://gitee.com/snowroll/powerpeeler
    ```
 
-3. 沙箱编译
+4. 沙箱编译
 
    ```powershell
    cd PowerPeeler
    pwsh ./build.ps1
    ```
 
-4. 工具使用
+5. 工具使用
 
    1. 切换目录，防止部分恶意脚本污染当前目录：```cd sandbox```
    2. 进入特殊pwsh环境：```../pwsh```
@@ -49,11 +52,11 @@
    ```powershell
    ../Deobfuscation/deob.ps1 --SettingType [Simple|Analysis|SemanticAnalysis]  --InputPath 输入文件位置 --OutputPath 输出文件位置 [-cmd] [-log]
    ```
-​	```-st --SettingType```	反混淆模式，有几种预设，可自行修改代码
-​	```-ip --InputPath```	输入文件位置
-​	```-op --OutputPath```	输出文件位置
-​	```-cmd --IsCmd```	cmd一句话模式
-​	```-log --SaveLog```	保存日志，可用于反混淆结构查看器
+   ​	```-st --SettingType```	反混淆模式，有几种预设，可自行修改代码
+   ​	```-ip --InputPath```	输入文件位置
+   ​	```-op --OutputPath```	输出文件位置
+   ​	```-cmd --IsCmd```	cmd一句话模式
+   ​	```-log --SaveLog```	保存日志，可用于反混淆结构查看器
 
 
 

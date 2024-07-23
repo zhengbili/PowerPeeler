@@ -19,7 +19,7 @@ cp bin/Debug/net7.0/DeobfuscationHelper.dll ./
 #cp bin/Debug/net7.0/CmdParser.exe ./
 #cp bin/Debug/net7.0/CmdParser.runtimeconfig.json ./
 cp bin/Debug/net7.0/Echo.dll ./
-cp bin/Debug/net7.0/Echo ./ || cp bin/Debug/net7.0/Echo.exe ./
+try{cp bin/Debug/net7.0/Echo ./}catch{cp bin/Debug/net7.0/Echo.exe ./}
 cp bin/Debug/net7.0/Echo.runtimeconfig.json ./
 rm -r bin
 rm -r obj
