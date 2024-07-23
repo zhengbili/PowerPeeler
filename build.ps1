@@ -1,8 +1,10 @@
 #!/usr/bin/env pwsh
 # compile sandbox
+cd Powershell
 Import-Module ./build.psm1
 Start-PSBootstrap
 Start-PSBuild -Configuration Release
+cd ..
 
 # install dependencies
 Install-Module -Name PSScriptAnalyzer
