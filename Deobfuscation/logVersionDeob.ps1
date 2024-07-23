@@ -1,5 +1,4 @@
-﻿#阅读配置
-$global:Rule = @{
+﻿$global:Rule = @{
     'CHECK_PRINTABLE_RATE'         = 0.9
     'IGNORE_ASSIGN_LEFT'           = $true
     'IGNORE_SIGNLE_COMMAND_OUTPUT' = $true
@@ -8,7 +7,6 @@ $global:Rule = @{
     'MAX_LENGTH'                   = 1000
 }
 
-#分析配置
 $global:Rule = @{
     'CHECK_PRINTABLE_RATE'         = 0.5; #0
     'IGNORE_ASSIGN_LEFT'           = $true
@@ -406,7 +404,7 @@ foreach ($filename in $filenames) {
     <#
     # $script0=Start-Job {cd  ./invoke-deobfuscation/Code/;Import-Module ./Invoke-DeObfuscation.psd1;DeObfuscatedMain -ScriptPath0 ../../test.ps1}|Wait-Job -Timeout 30|Receive-Job
     # if($script0){$script0 > test.ps1}
-    # else{Write-Host "静态反混淆失败！"}
+    # else{Write-Host "Script Recovery Failed!"}
     $exe = Start-Process -FilePath $pwshLocation -ArgumentList '../Deobfuscation/test.ps1' -WorkingDirectory '../sandbox/' -PassThru;# -WindowStyle 'Hidden'
     try{Wait-Process -Id $exe.Id -Timeout 30 -ErrorAction 'Stop';}
     catch{
@@ -622,7 +620,7 @@ foreach ($filename in $filenames) {
         $script_txt > out.ps1
         # $script1=Start-Job {cd  ./invoke-deobfuscation/Code/;Import-Module ./Invoke-DeObfuscation.psd1;DeObfuscatedMain -ScriptPath0 ../../out.ps1}|Wait-Job -Timeout 30|Receive-Job
         # if($script1){$script_txt = $script1;}
-        # else{Write-Host "静态反混淆失败！"}
+        # else{Write-Host "Script Recovery Failed!"}
         [System.IO.File]::WriteAllText($result_dir + $filename.Name, $script_txt)
         $t2 = Get-Date
         $times0[$filename.Name] = $t1 - $t0

@@ -2,11 +2,11 @@
 param(
     [Parameter(Mandatory = $false)]
     [Alias('ip')]
-    [string]$InputPath = '--', #'../samples/unittest.ps1',
+    [string]$InputPath = '--', #'./unittest.ps1',
 
     [Parameter(Mandatory = $false)]
     [Alias('op')]
-    [string]$OutputPath = '--', #'../sandbox/out.ps1',
+    [string]$OutputPath = '--', #'./out.ps1',
 
     [Parameter(Mandatory = $false)]
     [Alias('st')]
@@ -15,32 +15,26 @@ param(
 
     [Parameter(Mandatory = $false)]
     [Alias('cmd')]
-    [switch]$IsCmd,
-
-    [Parameter(Mandatory = $false)]
-    [Alias('log')]
-    [switch]$SaveLog
+    [switch]$IsCmd
 )
 
 
 switch ($SettingType) {
     'Simple' {
-        #Simple Configuration
         $global:Rule = @{
             'CHECK_PRINTABLE_RATE'         = 1
             'IGNORE_ASSIGN_LEFT'           = $true
-            'IGNORE_SIGNLE_COMMAND_OUTPUT' = $true
-            'IGNORE_VARIABLE_ARGUMENT'     = $true
+            'IGNORE_SIGNLE_COMMAND_OUTPUT' = $false
+            'IGNORE_VARIABLE_ARGUMENT'     = $false
             'STRONG_TYPE'                  = $false
-            'KEEP_USER_FUNCTION'           = $false
-            'MAX_LENGTH'                   = 1000
+            'KEEP_USER_FUNCTION'           = $true
+            'MAX_LENGTH'                   = 500000
             'ALLOW_TYPE'                   = @([int], [string], [char[]])
             'BAN_TYPE'                     = @([intptr])
         }
         break
     }
     'Read' {
-        #Configuration for reading
         $global:Rule = @{
             'CHECK_PRINTABLE_RATE'         = 0.75
             'IGNORE_ASSIGN_LEFT'           = $true
@@ -53,8 +47,7 @@ switch ($SettingType) {
         }
         break
     }
-    'Analysis' {
-        #Configuration for analysing
+    'SemanticAnalysis' {
         $global:Rule = @{
             'CHECK_PRINTABLE_RATE'         = 0.5
             'IGNORE_ASSIGN_LEFT'           = $true
@@ -67,8 +60,7 @@ switch ($SettingType) {
         }
         break
     }
-    'SemanticAnalysis' {
-        #Configuration for semantic analysing
+    'Analysis' {
         $global:Rule = @{
             'CHECK_PRINTABLE_RATE'         = 0.5
             'IGNORE_ASSIGN_LEFT'           = $true
@@ -116,8 +108,8 @@ function Stringify ($Object, $check = $true) {
     #$global:Object2 = $Object
     if ($check -and $null -ne $Object -and $null -ne $global:Rule['ALLOW_TYPE'] -and -not $global:Rule['ALLOW_TYPE'].Contains($Object.GetType())) { throw 'Type denied!' }
     if ($check -and $null -ne $Object -and ($global:Rule['BAN_TYPE'].Contains($Object.GetType()) -or @('RuntimeAssembly') -contains $Object.GetType().Name)) { throw 'Type denied!' }
-    if ($global:Rule['STRONG_TYPE']) { $t = (../Deobfuscation/ConvertTo-Expression.ps1 $Object $check -Strong -Expand -1 -Depth 3); }
-    else { $t = (../Deobfuscation/ConvertTo-Expression.ps1 $Object $check -Expand -1 -Depth 3); }
+    if ($global:Rule['STRONG_TYPE']) { $t = (./ConvertTo-Expression.ps1 $Object $check -Strong -Expand -1 -Depth 3); }
+    else { $t = (./ConvertTo-Expression.ps1 $Object $check -Expand -1 -Depth 3); }
     if ($check -and $t -match '\[pscustomobject\]') { throw 'pscustomobject denied!' }
     return $t
 }
@@ -130,7 +122,7 @@ function ParseCmd($lines) {
         $argv = (./temp.bat) | ConvertFrom-Json
         Remove-Item ./temp.bat
         if ($argv.Count -lt 1) { continue; }
-        if (-not $argv[0].ToLower().Contains('pwsh') -and -not $argv[0].ToLower().Contains('powershell')) { continue; }
+        if (-not $argv[0].Contains('pwsh') -and -not $argv[0].Contains('powershell')) { continue; }
         $w = 1
         $command = [System.Collections.Generic.List[string]]::new()
         while ($w -lt $argv.Count) {
@@ -166,7 +158,7 @@ function DeobPowershell($Command = '', $EncodCommand = '') {
     $temp_file1 = "$([datetime]::Now.Ticks).tmp"
     $temp_file2 = "$([datetime]::Now.Ticks+1).tmp"
     [System.IO.File]::WriteAllText($temp_file1, $Command)
-    $std_log = pwsh ../Deobfuscation/deob.ps1 -InputPath $temp_file1 -OutputPath $temp_file2
+    $std_log = pwsh ./deob.ps1 -InputPath $temp_file1 -OutputPath $temp_file2
     $result = [System.IO.File]::ReadAllText($temp_file2)
     Remove-Item $temp_file1
     Remove-Item $temp_file2
@@ -336,7 +328,7 @@ function PreTraversal ($curNode) {
                 if ($curArgv.GetType() -eq [scriptblock]) { break; }
                 $w += 1
             }
-            Write-Host -ForegroundColor White 'Powershell command found: '
+            Write-Host -ForegroundColor White 'Powershell command-line found: '
             Write-Host -ForegroundColor Green $command
             Write-Host -ForegroundColor Green $encodedcommand
             $env:powershellDepth = $env:powershellDepth + 1
@@ -545,12 +537,12 @@ function DeObfuscate ($ScriptString) {
     }
     #Write-Host $iexPrefix;
     foreach ($key in $NodeString.Keys) { $Info['ResultNodeString'][$key] = $NodeString[$key]; }
-    if ($SaveLog) { $Info | ConvertTo-Json > ('' + $Info['Root'] + '.json') }
+    #$Info|ConvertTo-Json > (''+$Info['Root']+'.json')
     $s = $NodeString[(GetHashCode $Ast)]
     $s = CodeFormat -ScriptString $NodeString[(GetHashCode $Ast)]
     try {
-        Get-Command -Name 'Invoke-Formatter' -ErrorAction SilentlyContinue | Out-Null || Import-Module ../Deobfuscation/PSScriptAnalyzer/1.21.0/PSScriptAnalyzer.psd1
-        $s = Invoke-Formatter -ScriptDefinition $s -Settings ../Deobfuscation/FormatterSettings.psd1
+        Import-Module ./PSScriptAnalyzer/1.21.0/PSScriptAnalyzer.psd1
+        $s = Invoke-Formatter -ScriptDefinition $s -Settings ./FormatterSettings.psd1
     } catch { Write-Host -ForegroundColor red 'Invoke-Formatter Failed!' }
     return $s
 }
@@ -560,14 +552,14 @@ $ttt0 = Get-Date
 class NaObject {}
 $NaObject = [NaObject]::new()
 [System.IO.Directory]::SetCurrentDirectory($PWD)
-# Load sandbox settings
-Import-Module ../Deobfuscation/SandboxSettings.ps1
+# load sandbox settings
+Import-Module ./SandboxSettings.ps1
 
 if ($InputPath -eq '--') { [System.IO.File]::WriteAllText('test.ps1', (Read-Host 'Script')); }
 else { Copy-Item $InputPath test.ps1 }
 
 # if ($IsCmd) {
-#     [void][System.Reflection.Assembly]::UnsafeLoadFrom((Get-ChildItem ../Deobfuscation/CmdParser.dll).FullName)
+#     [void][System.Reflection.Assembly]::UnsafeLoadFrom((Get-ChildItem ./CmdParser.dll).FullName)
 #     $results, $errors = [CmdParser]::parse('test.ps1')
 #     Write-Host $errors
 #     #$CmdScript = ($results | ForEach-Object { 'powershell.exe ' + (Stringify $_).TrimStart('[string]') }) -join "`n`n"
@@ -581,23 +573,24 @@ if ($IsCmd) {
     [System.IO.File]::WriteAllText('test.ps1', $CmdScript)
 }
 
-# $script0=Start-Job {cd  ../Deobfuscation/invoke-deobfuscation/Code/;Import-Module ./Invoke-DeObfuscation.psd1;DeObfuscatedMain -ScriptPath0 ../../test.ps1}|Wait-Job -Timeout 30|Receive-Job
+#<#
+# $script0=Start-Job {cd  ./invoke-deobfuscation/Code/;Import-Module ./Invoke-DeObfuscation.psd1;DeObfuscatedMain -ScriptPath0 ../../test.ps1}|Wait-Job -Timeout 30|Receive-Job
 # if($script0){$script0 > test.ps1}
-# else{Write-Host -ForegroundColor red "Static Deobfuscation Failed!"}
-
+# else{Write-Host -ForegroundColor red "Script Recovery Failed!"}
 $OriginScript = [System.IO.File]::ReadAllText('test.ps1')
 $infos = @()
-# Change hookTimes to optimize deobfuscation results in loop
 $hookTimes = 1
 for ($i = 0; $i -lt $hookTimes; $i++) {
     $PowerShell = [powershell]::Create()
     [void]$PowerShell.AddScript([scriptblock]::Create($OriginScript))
-    $PowerShell.InvokeDeobfuscation(300)
+    $PowerShell.InvokeDeobfuscation(30)
     $PowerShell.EndDeobfuscation()
     if ($Powershell.isTimeOut()) { Write-Host -ForegroundColor red 'Sandbox timeout!' }
     $infos += $PowerShell.ObtainLogs()
 }
-
+# Write-Host (Get-Date)
+# Start-Sleep 30
+# Write-Host (Get-Date)
 $valuelog = @{}
 $foreachCount = @{}
 $funcCount = @{}
@@ -673,10 +666,12 @@ $keys = $valuelog.Keys | Where-Object { $valuelog[$_] -is [NaObject] -or "$($val
 foreach ($key in $keys) { $valuelog[$key] = $null; }
 $global:iexPrefix = ''
 $script_txt = DeObfuscate -ScriptString $OriginScript
-
-# $script1=Start-Job {cd  ../Deobfuscation/invoke-deobfuscation/Code/;Import-Module ./Invoke-DeObfuscation.psd1;DeObfuscatedMain -ScriptPath0 ../../out.ps1}|Wait-Job -Timeout 30|Receive-Job
+# $script1=Start-Job {cd  ./invoke-deobfuscation/Code/;Import-Module ./Invoke-DeObfuscation.psd1;DeObfuscatedMain -ScriptPath0 ../../out.ps1}|Wait-Job -Timeout 30|Receive-Job
 # if($script1){$script_txt = $script1;}
-# else{Write-Host -ForegroundColor red "Static Deobfuscation Failed!"}
-
+# else{Write-Host -ForegroundColor red "Script Recovery Failed!"}
 if ($OutputPath -eq '--') { Write-Output $script_txt }
 else { [System.IO.File]::WriteAllText($OutputPath, $script_txt) }
+
+
+$ttt1 = Get-Date
+#$ttt1 - $ttt0

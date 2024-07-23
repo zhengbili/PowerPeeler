@@ -177,7 +177,7 @@ using namespace System.Management.Automation
     [string]$NewLine = [System.Environment]::NewLine
 )
 begin {
-    [void][System.Reflection.Assembly]::UnsafeLoadFrom((Get-ChildItem ../Deobfuscation/DeobfuscationHelper.dll).FullName);
+    [void][System.Reflection.Assembly]::UnsafeLoadFrom((ls ./DeobfuscationHelper.dll).FullName);
     $ValidUnqoutedKey = '^[\p{L}\p{Lt}\p{Lm}\p{Lo}_][\p{L}\p{Lt}\p{Lm}\p{Lo}\p{Nd}_]*$'
     $PrintableChar = '^[\w\!\"\#\$\%\&\''\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^_\`\{\|\}\~\ \t\n\r]+$'
     $ListItem = $Null
@@ -281,16 +281,11 @@ begin {
         }
         if ($Null -eq $Object) { "`$Null" } else {
             $Type = $Object.GetType()
-            if ($Object -is [byte[]]) { return Stringify (QuoteByte $Object) }
-            elseif ($Object -is [char[]]) { return Stringify (QuoteChar $Object) $Type }
-            elseif (($Object -is [array] -or $Object -is [System.Collections.Generic.List[object]] -or $Object -is [System.Collections.Generic.List[int]]) -and $Object.Count -gt 10) {
-                if ($Object[0] -is [int] -and $Object[-1] -is [int]){
-                    if ($Object[0] -eq $Object[-1] -and "$Object" -eq "$((,$Object[0])*$Object.Count)") { return Stringify "((,$($Object[0]))*$($Object.Count))" }
-                    if ("$Object" -eq "$($Object[0]..$Object[-1])") { return Stringify "($($Object[0])..$($Object[-1]))" }
-                }
+            if (($Object -is [array] -or $Object -is [System.Collections.Generic.List[object]] -or $Object -is [System.Collections.Generic.List[int]]) -and $Object.Count -gt 10 -and $Object[0] -is [int] -and $Object[-1] -is [int]) {
+                if ($Object[0] -eq $Object[-1] -and "$Object" -eq "$((,$Object[0])*$Object.Count)") { return Stringify "((,$($Object[0]))*$($Object.Count))" }
+                if ("$Object" -eq "$($Object[0]..$Object[-1])") { return Stringify "($($Object[0])..$($Object[-1]))" }
                 $types=[System.Collections.Generic.HashSet[type]]($Object|%{$_.GetType()})
-                if(([System.Collections.Generic.HashSet[type]]@([short],[int],[long])).IsSupersetOf($types)){ return Stringify ('('+(($Object|%{$_.ToString()}) -join ',')+')') }
-                if($Type -eq [object[]] -and $types.Count -eq 1 -and $types[0] -ne [object]){return ("[object[]]" + (Serialize ($Object -as "$($types[0])[]")))}
+                if(([System.Collections.Generic.HashSet[type]]@([int])).IsSupersetOf($types)){ return Stringify ('('+(($Object|%{$_.ToString()}) -join ',')+')') }
             }
             if ($Object -is [pscustomobject] -and !($Object -is [psobject])) { '[pscustomobject]' }
             elseif ($Object -is [double] -or $Object -is [single]) {
@@ -300,6 +295,8 @@ begin {
                 else{Stringify "$Object"}
             }
             elseif ($Object -is [type]) { try{iex "[$Object]"|Out-Null;"[$Object]"}catch{if($check){throw 'Bad type!'}else{"[$Object]"}} }
+            elseif ($Object -is [byte[]]) { Stringify (QuoteByte $Object) }
+            elseif ($Object -is [char[]]) { Stringify (QuoteChar $Object) $Type }
             elseif ($Object -is [Boolean]) { if ($Object) { Stringify '$True' } else { Stringify '$False' } }
             elseif ('adsi' -as [type] -and $Object -is [adsi]) { Stringify "'$($Object.ADsPath)'" $Type }
             elseif ('Char','mailaddress','Regex','Semver','Type','Version','Uri' -contains $Type.Name) { Stringify "'$($Object)'" $Type }
