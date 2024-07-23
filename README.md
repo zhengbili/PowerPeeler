@@ -1,65 +1,65 @@
 # PowerPeeler
 
->一款通用且精确的PowerShell脚本反混淆器
+>A Precise and General Dynamic Deobfuscation Method for PowerShell Scripts
+
+[中文版](README.zh-CN.md)
 
 
 
-### 相关资料
+### Related resources
 
-- 会议版论文
-- 完整版论文：[arxiv](https://arxiv.org/abs/2406.04027)
+- conference paper
+- full paper：[arxiv](https://arxiv.org/abs/2406.04027)
 
 
 
-### 使用方法
+### Usage
 
-1. 环境需求
+1. Environment requirement
 
-   - 基本环境：参见[PowerShell官方编译指南](https://github.com/PowerShell/PowerShell#building-the-repository)
+   - base environment: refer to [PowerShell official build instruction](https://github.com/PowerShell/PowerShell#building-the-repository)
    - .net core 3.1
    - pwsh(powershell>=7)
-   - PSScriptAnalyzer（可选，用于代码格式化）
-   - [Invoke-Deobfuscation](https://gitee.com/snowroll/invoke-deobfuscation)（可选，用于动静态结合反混淆）
+   - PSScriptAnalyzer(optional, for code formatting)
+   - [Invoke-Deobfuscation](https://gitee.com/snowroll/invoke-deobfuscation)(optional, static and dynamic combination)
 
-2. 工具获取
+2. Get the tool
 
    ```bash
    git clone https://github.com/zhengbili/PowerPeeler
    ```
 
-   或
+   Or
 
    ```bash
    git clone https://gitee.com/snowroll/powerpeeler
    ```
 
-3. 沙箱编译
+3. Compile sandbox
 
    ```powershell
    cd PowerPeeler
    pwsh ./build.ps1
    ```
 
-4. 工具使用
+4. Tool usage
 
-   1. 切换目录，防止部分恶意脚本污染当前目录：```cd sandbox```
-   2. 进入特殊pwsh环境：```../pwsh```
-   3. 在特殊pwsh环境中执行反混淆脚本
+   1. Change the directory to prevent some malicious scripts from polluting the current directory: ```cd sandbox```
+   2. Enter special pwsh environments: ```../pwsh```
+   3. Execute anti-obfuscation scripts in the special pwsh environment
 
    ```powershell
-   ../Deobfuscation/deob.ps1 --SettingType [Simple|Analysis|SemanticAnalysis]  --InputPath 输入文件位置 --OutputPath 输出文件位置 [-cmd] [-log]
+   ../Deobfuscation/deob.ps1 --SettingType [Simple|Analysis|SemanticAnalysis]  --InputPath InputFileLocation --OutputPath OutputFileLocation [-cmd] [-log]
    ```
-​	```-st --SettingType```	反混淆模式，有几种预设，可自行修改代码
-​	```-ip --InputPath```	输入文件位置
-​	```-op --OutputPath```	输出文件位置
-​	```-cmd --IsCmd```	cmd一句话模式
-​	```-log --SaveLog```	保存日志，可用于反混淆结构查看器
+​	```-st --SettingType```	deobfuscation mode, with several presets, the code can be modified yourself
+​	```-ip --InputPath```	input file location
+​	```-op --OutputPath```	output file location
+​	```-cmd --IsCmd```	cmd one-line mode
+​	```-log --SaveLog```	save log
 
 
 
-### 使用示例
-
-> samples/unittest.ps1中包含了多种不同类型的测试样例，可参阅
+### Example
 
 ```../pwsh ../Deobfuscation/deob.ps1 -ip in.ps1 -op out.ps1```
 
@@ -85,15 +85,7 @@
 
 
 
-### 反混淆结构查看器
-
-> 参考二进制反混淆的层级结构查看器
-
-由于采用了直接变量替换，直接采用反混淆脚本存在部分反混淆过度的问题。为方便用户自行确定反混淆边界，```Deobfuscation/```下提供了一个简易的反混淆结构查看器。
-
-
-
-### 引用格式
+### Citation format
 
 ```
 @misc{li2024powerpeelerprecisegeneraldynamic,
