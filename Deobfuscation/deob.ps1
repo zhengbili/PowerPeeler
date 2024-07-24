@@ -565,7 +565,8 @@ function DeObfuscate ($ScriptString) {
     $s = CodeFormat -ScriptString $NodeString[(GetHashCode $Ast)]
     try {
         Get-Command -Name 'Invoke-Formatter' -ErrorAction SilentlyContinue | Out-Null || Import-Module ../Deobfuscation/PSScriptAnalyzer/1.21.0/PSScriptAnalyzer.psd1
-        $s = Invoke-Formatter -ScriptDefinition $s -Settings ../Deobfuscation/FormatterSettings.psd1
+        $t = Start-Job {Invoke-Formatter -ScriptDefinition $input -Settings ../Deobfuscation/FormatterSettings.psd1} -InputObject $s|Wait-Job -Timeout 30|Receive-Job
+        if ($t) { $s = $t } else { throw "Timeout!" }
     } catch { Write-Host -ForegroundColor red 'Invoke-Formatter Failed!' }
     return $s
 }
